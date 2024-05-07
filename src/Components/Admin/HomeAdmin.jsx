@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Spinner from '../Components/Spinner';
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from 'react-icons/bs';
@@ -10,14 +9,19 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CiSearch } from "react-icons/ci";
-import Amr from '../Components/Footers/Amr';
-import HeroSection from '../Components/Hero/HeroSection';
-import About from '../Components/Hero/About';
-import Header from '../Components/header';
-import Bilgiler from './Bilgiler';
-import GroubContact from '../Components/Hero/GroubContact';
+import HeroSection from '../Hero/HeroSection';
+import Bilgiler from '../../pages/Bilgiler';
+import About from '../Hero/About';
+import Amr from '../Footers/Amr';
+import Spinner from '../Spinner';
+import HeaderAdmin from './HeaderAdmin';
+// import Amr from '../Components/Footers/Amr';
+// import HeroSection from '../Components/Hero/HeroSection';
+// import About from '../Components/Hero/About';
+// import Header from '../Components/header';
+// import Bilgiler from './Bilgiler';
 
-const Home = () => {
+const HomeAdmin = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -64,7 +68,7 @@ const Home = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderAdmin/>
             <HeroSection />
             <Form className='flex flex-col items-center mt-6'>
                 <InputGroup className='my-3 w-11/12 sm:w-1/4'>
@@ -80,10 +84,10 @@ const Home = () => {
 
             <div className='p-4'>
                 <div className='flex justify-between items-center'>
-                    <h1 className='text-3xl my-8'>Üniversitenizi seçiniz</h1>
-                    {/* <Link to='/books/create'>
+                    <h1 className='text-3xl my-8'>Üniversite Listesi</h1>
+                    <Link to='/books/create'>
                         <MdOutlineAddBox className='text-sky-800 text-4xl' />
-                    </Link> */}
+                    </Link>
                 </div>
 
 
@@ -103,7 +107,7 @@ const Home = () => {
                                     <th className='border border-slate-600 rounded-md text-center'>Sonuç Tarihi</th>
                                     <th className='border border-slate-600 rounded-md text-center'>Geçerli Belgiler</th>
                                     <th className='border border-slate-600 rounded-md text-center'>Sıralama</th>
-                                    <th className='border border-slate-600 rounded-md text-center'>Detaylar</th>
+                                    <th className='border border-slate-600 rounded-md text-center'>Operation</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,12 +145,12 @@ const Home = () => {
                                                 <Link to={`/books/details/${book._id}`}>
                                                     <BsInfoCircle className='text-2x1 text-green-800' />
                                                 </Link>
-                                                {/* <Link to={`/books/edit/${book._id}`}>
+                                                <Link to={`/books/edit/${book._id}`}>
                                                     <AiOutlineEdit className='text-2x1 text-yellow-600' />
                                                 </Link>
                                                 <Link to={`/books/delete/${book._id}`}>
                                                     <MdOutlineDelete className='text-2x1 text-red-600' />
-                                                </Link> */}
+                                                </Link>
                                             </div>
                                         </td>
                                     </tr>
@@ -157,11 +161,10 @@ const Home = () => {
                     </div>
                 )}
             </div>
-            <GroubContact/>
             <About />
             <Amr />
         </div>
     )
 }
 
-export default Home;
+export default HomeAdmin;

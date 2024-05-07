@@ -1,0 +1,96 @@
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import BackButton from '../Components/BackButton';
+import Spinner from '../Components/Spinner';
+import Header from '../Components/header';
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const[name,setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const data = { name, email, password };
+    axios.post("http://localhost:5000/api/users", data)
+      .then((response) => {
+        console.log(data);
+        const { token } = response.data;
+
+        if (token) {
+            localStorage.setItem("token", JSON.stringify(data));
+            setLoading(false);
+          navigate('/login');
+        } else {
+          setLoading(false);
+          console.error("Token not found in response:", response.data);
+          alert("An error occurred. Please check the console.");
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Login error:", error);
+        alert("An error occurred. Please check the console.");
+      });
+  };
+
+  return (
+    <>
+    <Header/>
+      <div className='p-4'>
+        <BackButton />
+        <div className="p-7 max-w-lg mx-auto">
+          <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
+          {loading ? <Spinner /> : ''}
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={submitHandler}
+          >
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              className='bg-slate-100 p-3 rounded-lg'
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              className='bg-slate-100 p-3 rounded-lg'
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              className='bg-slate-100 p-3 rounded-lg'
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button disabled={loading} type="submit" className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
+              {loading ? 'loading...' : 'Create Account'}
+            </button>
+            <p></p>
+          </form>
+          <div className='flex gap-2 mt-3'>
+            <p>I Have an account</p>
+            <Link to='/login'>
+              <span className='text-blue-500'>Sigin in</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;

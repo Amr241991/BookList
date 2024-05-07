@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BackButton from '../Components/BackButton';
 import Spinner from '../Components/Spinner';
+import Header from '../Components/header';
 
 const DeleteBook = () => {
   const {id} = useParams();
@@ -10,7 +11,13 @@ const DeleteBook = () => {
   const [loading,setLoading]= useState(false);
   const handleDeleteBook = ()=>{
     setLoading(true);
-    axios.delete(`http://localhost:5000/books/${id}`)
+    const config = {
+      headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${localStorage.getItem('token')}` 
+      }
+  };
+    axios.delete(`http://localhost:5000/books/${id}`,config)
     .then(()=>{
       setLoading(false);
       navgate('/');
@@ -22,6 +29,8 @@ const DeleteBook = () => {
   }
 
   return (
+    <>
+    <Header/>
     <div className='p-4'>
       <BackButton/>
         <h1 className='text-3x1 my-4'>Delete Book</h1>
@@ -34,6 +43,7 @@ const DeleteBook = () => {
           </button>
         </div>
     </div>
+    </>
   )
 }
 
